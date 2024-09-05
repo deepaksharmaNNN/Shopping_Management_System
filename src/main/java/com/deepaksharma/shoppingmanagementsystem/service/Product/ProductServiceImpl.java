@@ -11,6 +11,8 @@ import com.deepaksharma.shoppingmanagementsystem.service.category.CategoryServic
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -43,6 +45,10 @@ public class ProductServiceImpl implements ProductService {
         }
         return product;
     }
+    @Override
+    public List<Product> findProductsByName(String name){
+        return productRepository.findProductsByName(name);
+    }
 
     @Override
     public void deleteProduct(Long id) {
@@ -52,34 +58,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
     public Product updateProduct(ProductDTO product) {
         return null;
     }
 
     @Override
-    public Product findProductByCategory(String category) {
-        Product product = productRepository.findByName(category);
-        if(product == null){
-            throw new ResourceNotFoundException("Product not found with category: " + category);
-        }
-        return product;
+    public List<Product> findProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
     }
 
     @Override
-    public Product findProductByBrand(String brand) {
-        Product product = productRepository.findByBrand(brand);
-        if(product == null){
-            throw new ResourceNotFoundException("Product not found with brand: " + brand);
-        }
-        return product;
+    public List<Product> findProductsByBrand(String brand) {
+        return productRepository.findByBrand(brand);
     }
 
     @Override
-    public Product findProductByCategoryAndBrand(String category, String brand) {
-        Product product = productRepository.findByCategoryNameAndBrand(category, brand);
-        if(product == null){
-            throw new ResourceNotFoundException("Product not found with category: " + category + " and brand: " + brand);
-        }
-        return product;
+    public List<Product> findProductsByCategoryAndBrand(String category, String brand) {
+        return productRepository.findByCategoryNameAndBrand(category, brand);
     }
 }
