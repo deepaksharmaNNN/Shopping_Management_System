@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
@@ -17,6 +18,8 @@ public class Product {
     Long id;
 
     String name;
+
+    String brand;
 
     String description;
 
