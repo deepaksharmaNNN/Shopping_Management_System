@@ -1,4 +1,7 @@
 package com.deepaksharma.shoppingmanagementsystem.exceptions;
 
-public class ResourseNotFoundException {
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
 }
