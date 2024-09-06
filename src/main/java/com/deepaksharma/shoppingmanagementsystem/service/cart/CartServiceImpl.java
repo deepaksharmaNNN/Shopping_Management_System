@@ -10,6 +10,7 @@ import com.deepaksharma.shoppingmanagementsystem.repository.CartItemRepository;
 import com.deepaksharma.shoppingmanagementsystem.repository.CartRepository;
 import com.deepaksharma.shoppingmanagementsystem.service.Product.ProductService;
 import com.deepaksharma.shoppingmanagementsystem.service.user.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,7 @@ public class CartServiceImpl implements CartService {
     }
 
 
+    @Transactional
     @Override
     public CartItem addCartItem(Long userId, CartItemDTO cartItemDTO) {
         Cart cart = getCart(userId);
@@ -61,8 +63,10 @@ public class CartServiceImpl implements CartService {
         cartItem.setQuantity(cartItemDTO.getQuantity());
         cartItem.setCart(cart);
         cartItem.setProduct(product);
+        product.setQuantity(product.getQuantity() - cartItemDTO.getQuantity());
         cartItem.setPrice(product.getPrice() * cartItemDTO.getQuantity());
         cart.getCartItems().add(cartItem);
+        cart.setTotalPrice(cart.getTotalPrice() + cartItem.getPrice());
         cartItemRepository.save(cartItem);
         return cartItem;
     }

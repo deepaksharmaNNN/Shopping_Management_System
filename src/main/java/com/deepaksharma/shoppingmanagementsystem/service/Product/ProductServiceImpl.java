@@ -7,7 +7,6 @@ import com.deepaksharma.shoppingmanagementsystem.model.Category;
 import com.deepaksharma.shoppingmanagementsystem.model.Product;
 import com.deepaksharma.shoppingmanagementsystem.repository.ProductRepository;
 import com.deepaksharma.shoppingmanagementsystem.service.category.CategoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +24,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product saveProduct(ProductDTO product) {
         Product newProduct = ProductMapper.mapToProduct(product);
-        Category category = categoryService.findCategoryByName(product.getCategory());
+        Category category = categoryService.findCategoryByName(product.getCategory().getName());
         if(category == null) {
-            category = categoryService.saveCategory(product.getCategory());
+            category = categoryService.saveCategory(product.getCategory().getName());
         }
         newProduct.setCategory(category);
         return productRepository.save(newProduct);
@@ -74,9 +73,9 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setBrand(product.getBrand());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setQuantity(product.getQuantity());
-        Category category = categoryService.findCategoryByName(product.getCategory());
+        Category category = categoryService.findCategoryByName(product.getCategory().getName());
         if(category == null) {
-            category = categoryService.saveCategory(product.getCategory());
+            category = categoryService.saveCategory(product.getCategory().getName());
         }
         existingProduct.setCategory(category);
         return productRepository.save(existingProduct);

@@ -3,7 +3,6 @@ package com.deepaksharma.shoppingmanagementsystem.controller;
 import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundException;
 import com.deepaksharma.shoppingmanagementsystem.response.ApiResponse;
 import com.deepaksharma.shoppingmanagementsystem.service.category.CategoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
