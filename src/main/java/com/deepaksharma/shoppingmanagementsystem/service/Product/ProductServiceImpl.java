@@ -1,6 +1,5 @@
 package com.deepaksharma.shoppingmanagementsystem.service.Product;
 
-import com.deepaksharma.shoppingmanagementsystem.dtos.CategoryDTO;
 import com.deepaksharma.shoppingmanagementsystem.dtos.ProductDTO;
 import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundException;
 import com.deepaksharma.shoppingmanagementsystem.mapper.ProductMapper;
@@ -25,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
         Product newProduct = ProductMapper.mapToProduct(product);
         Category category = categoryService.findCategoryByName(product.getCategory());
         if(category == null) {
-            category = categoryService.saveCategory(new CategoryDTO(product.getCategory()));
+            category = categoryService.saveCategory(product.getCategory());
         }
         newProduct.setCategory(category);
         return productRepository.save(newProduct);
@@ -64,7 +63,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(ProductDTO product) {
-        return null;
+        Product existingProduct = productRepository.findByName(product.getName());
+        if(existingProduct == null){
+            throw new ResourceNotFoundException("Product not found with name: " + product.getName());
+        }
+        existingProduct.setName(product.getName());
+        existingProduct.setBrand(product.getBrand());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setQuantity(product.getQuantity());
+        Category category = categoryService.findCategoryByName(product.getCategory());
+        if(category == null) {
+            category = categoryService.saveCategory(product.getCategory());
+        }
+        existingProduct.setCategory(category);
+        return productRepository.save(existingProduct);
     }
 
     @Override

@@ -1,12 +1,14 @@
 package com.deepaksharma.shoppingmanagementsystem.service.category;
 
-import com.deepaksharma.shoppingmanagementsystem.dtos.CategoryDTO;
 import com.deepaksharma.shoppingmanagementsystem.model.Category;
 
+import java.util.List;
+
 public interface CategoryService {
-    Category saveCategory(CategoryDTO category);
+    Category saveCategory(String name);
     Category findCategoryById(Long id);
     Category findCategoryByName(String name);
     void deleteCategory(Long id);
-    Category updateCategory(CategoryDTO category);
+    Category updateCategory(Long id, String name);
+    List<Category> getAllCategories();
 }
