@@ -4,7 +4,6 @@ import com.deepaksharma.shoppingmanagementsystem.dtos.CartItemDTO;
 import com.deepaksharma.shoppingmanagementsystem.response.ApiResponse;
 import com.deepaksharma.shoppingmanagementsystem.service.cart.CartService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ public class CartController {
     @PostMapping("/create/{userId}") // http://localhost:8080/api/v1/cart/create/1
     public ResponseEntity<ApiResponse> createCart(@PathVariable Long userId) {
         try {
-            return ResponseEntity.ok(new ApiResponse("Cart created successfully", cartService.createCart(userId)));
+            return ResponseEntity.ok(new ApiResponse("Cart created successfully", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }

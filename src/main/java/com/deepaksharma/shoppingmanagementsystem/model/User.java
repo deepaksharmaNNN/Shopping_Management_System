@@ -16,11 +16,11 @@ import java.util.List;
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
     String username;
 
     @Column(nullable = false, unique = true)
@@ -36,8 +36,7 @@ public class User {
     @JoinColumn
     Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

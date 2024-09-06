@@ -1,5 +1,6 @@
 package com.deepaksharma.shoppingmanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +21,8 @@ public class Cart {
     Long id;
 
     @OneToOne
-    @JoinColumn
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
     User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

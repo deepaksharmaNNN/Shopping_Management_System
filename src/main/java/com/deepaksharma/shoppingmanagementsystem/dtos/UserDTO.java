@@ -1,5 +1,6 @@
 package com.deepaksharma.shoppingmanagementsystem.dtos;
 
+import com.deepaksharma.shoppingmanagementsystem.model.Address;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,5 +21,5 @@ public class UserDTO {
     @NotBlank(message = "Password is mandatory")
     String password;
 
-    AddressDTO address;
+    Address address;
 }

@@ -12,8 +12,10 @@ import com.deepaksharma.shoppingmanagementsystem.model.User;
 import com.deepaksharma.shoppingmanagementsystem.repository.UserRepository;
 import com.deepaksharma.shoppingmanagementsystem.service.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
+    @Lazy
     private CartService cartService;
 
 
@@ -31,11 +35,11 @@ public class UserServiceImpl implements UserService {
         newUser.setRole(Role.USER);
         Address address = AddressMapper.mapToAddress(user.getAddress());
         newUser.setAddress(address);
-
-        User savedUser = userRepository.save(newUser);
-        Cart cart = cartService.createCart(savedUser.getId());
-        savedUser.setCart(cart);
-        return userRepository.save(savedUser);
+        newUser.setOrders(new ArrayList<>());
+        newUser = userRepository.save(newUser);
+        Cart cart = cartService.createCart(newUser.getId());
+        newUser.setCart(cart);
+        return userRepository.save(newUser);
     }
 
     @Override

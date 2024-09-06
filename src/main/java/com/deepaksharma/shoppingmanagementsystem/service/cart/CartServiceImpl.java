@@ -2,7 +2,6 @@ package com.deepaksharma.shoppingmanagementsystem.service.cart;
 
 import com.deepaksharma.shoppingmanagementsystem.dtos.CartItemDTO;
 import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundException;
-import com.deepaksharma.shoppingmanagementsystem.mapper.CartItemMapper;
 import com.deepaksharma.shoppingmanagementsystem.model.Cart;
 import com.deepaksharma.shoppingmanagementsystem.model.CartItem;
 import com.deepaksharma.shoppingmanagementsystem.model.Product;
@@ -12,17 +11,19 @@ import com.deepaksharma.shoppingmanagementsystem.repository.CartRepository;
 import com.deepaksharma.shoppingmanagementsystem.service.Product.ProductService;
 import com.deepaksharma.shoppingmanagementsystem.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
-public class CartServiceImpl implements CartService{
+public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartRepository cartRepository;
 
     @Autowired
+    @Lazy
     private UserService userService;
 
     @Autowired
@@ -34,15 +35,16 @@ public class CartServiceImpl implements CartService{
     @Override
     public Cart createCart(Long userId) {
         User user = userService.findUserById(userId);
-        if(cartRepository.existsById(userId)) {
-            return cartRepository.findById(userId).orElse(null);
-        }
+        // Create and initialize the cart
         Cart cart = new Cart();
-        cart.setTotalPrice(0.0);
         cart.setUser(user);
+        cart.setTotalPrice(0.0);
         cart.setCartItems(new ArrayList<>());
+
+        // Save the cart and return
         return cartRepository.save(cart);
     }
+
 
     @Override
     public Cart getCart(Long userId) {
@@ -50,17 +52,19 @@ public class CartServiceImpl implements CartService{
                 new ResourceNotFoundException("Cart not found for user with id: " + userId));
     }
 
+
     @Override
     public CartItem addCartItem(Long userId, CartItemDTO cartItemDTO) {
         Cart cart = getCart(userId);
         Product product = productService.findProductById(cartItemDTO.getProductId());
-        CartItem cartItem = CartItemMapper.mapToCartItem(cartItemDTO);
+        CartItem cartItem = new CartItem();
+        cartItem.setQuantity(cartItemDTO.getQuantity());
         cartItem.setCart(cart);
         cartItem.setProduct(product);
+        cartItem.setPrice(product.getPrice() * cartItemDTO.getQuantity());
         cart.getCartItems().add(cartItem);
         cartItemRepository.save(cartItem);
         return cartItem;
-
     }
 
     @Override
