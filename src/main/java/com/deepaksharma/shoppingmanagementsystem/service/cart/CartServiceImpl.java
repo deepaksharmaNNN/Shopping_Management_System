@@ -1,0 +1,81 @@
+package com.deepaksharma.shoppingmanagementsystem.service.cart;
+
+import com.deepaksharma.shoppingmanagementsystem.dtos.CartItemDTO;
+import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundException;
+import com.deepaksharma.shoppingmanagementsystem.mapper.CartItemMapper;
+import com.deepaksharma.shoppingmanagementsystem.model.Cart;
+import com.deepaksharma.shoppingmanagementsystem.model.CartItem;
+import com.deepaksharma.shoppingmanagementsystem.model.Product;
+import com.deepaksharma.shoppingmanagementsystem.model.User;
+import com.deepaksharma.shoppingmanagementsystem.repository.CartItemRepository;
+import com.deepaksharma.shoppingmanagementsystem.repository.CartRepository;
+import com.deepaksharma.shoppingmanagementsystem.service.Product.ProductService;
+import com.deepaksharma.shoppingmanagementsystem.service.user.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+
+@Service
+@RequiredArgsConstructor
+public class CartServiceImpl implements CartService{
+    private final CartRepository cartRepository;
+    private final UserService userService;
+    private final ProductService productService;
+    private final CartItemRepository cartItemRepository;
+
+    @Override
+    public Cart createCart(Long userId) {
+        User user = userService.findUserById(userId);
+        if(cartRepository.existsById(userId)) {
+            return cartRepository.findById(userId).orElse(null);
+        }
+        Cart cart = new Cart();
+        cart.setTotalPrice(0.0);
+        cart.setUser(user);
+        cart.setCartItems(new ArrayList<>());
+        return cartRepository.save(cart);
+    }
+
+    @Override
+    public Cart getCart(Long userId) {
+        return cartRepository.findById(userId).orElseThrow(() ->
+                new ResourceNotFoundException("Cart not found for user with id: " + userId));
+    }
+
+    @Override
+    public CartItem addCartItem(Long userId, CartItemDTO cartItemDTO) {
+        Cart cart = getCart(userId);
+        Product product = productService.findProductById(cartItemDTO.getProductId());
+        CartItem cartItem = CartItemMapper.mapToCartItem(cartItemDTO);
+        cartItem.setCart(cart);
+        cartItem.setProduct(product);
+        cart.getCartItems().add(cartItem);
+        cartItemRepository.save(cartItem);
+        return cartItem;
+
+    }
+
+    @Override
+    public CartItem updateCartItemQuantity(Long userId, Long productId, Integer quantity) {
+        Cart cart = getCart(userId);
+        CartItem cartItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Cart item not found for product with id: " + productId));
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
+        return cartItem;
+    }
+
+    @Override
+    public void removeCartItem(Long userId, Long productId) {
+        Cart cart = getCart(userId);
+        CartItem cartItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Cart item not found for product with id: " + productId));
+        cart.getCartItems().remove(cartItem);
+        cartItemRepository.delete(cartItem);
+    }
+}

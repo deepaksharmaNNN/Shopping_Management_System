@@ -7,8 +7,10 @@ import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundExce
 import com.deepaksharma.shoppingmanagementsystem.mapper.AddressMapper;
 import com.deepaksharma.shoppingmanagementsystem.mapper.UserMapper;
 import com.deepaksharma.shoppingmanagementsystem.model.Address;
+import com.deepaksharma.shoppingmanagementsystem.model.Cart;
 import com.deepaksharma.shoppingmanagementsystem.model.User;
 import com.deepaksharma.shoppingmanagementsystem.repository.UserRepository;
+import com.deepaksharma.shoppingmanagementsystem.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final CartService cartService;
 
 
     @Override
@@ -27,7 +30,11 @@ public class UserServiceImpl implements UserService {
         newUser.setRole(Role.USER);
         Address address = AddressMapper.mapToAddress(user.getAddress());
         newUser.setAddress(address);
-        return userRepository.save(newUser);
+
+        User savedUser = userRepository.save(newUser);
+        Cart cart = cartService.createCart(savedUser.getId());
+        savedUser.setCart(cart);
+        return userRepository.save(savedUser);
     }
 
     @Override
