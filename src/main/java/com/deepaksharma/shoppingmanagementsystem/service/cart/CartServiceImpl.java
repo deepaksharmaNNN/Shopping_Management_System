@@ -1,6 +1,7 @@
 package com.deepaksharma.shoppingmanagementsystem.service.cart;
 
 import com.deepaksharma.shoppingmanagementsystem.dtos.CartItemDTO;
+import com.deepaksharma.shoppingmanagementsystem.exceptions.FailedToSaveException;
 import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundException;
 import com.deepaksharma.shoppingmanagementsystem.model.Cart;
 import com.deepaksharma.shoppingmanagementsystem.model.CartItem;
@@ -59,6 +60,9 @@ public class CartServiceImpl implements CartService {
     public CartItem addCartItem(Long userId, CartItemDTO cartItemDTO) {
         Cart cart = getCart(userId);
         Product product = productService.findProductById(cartItemDTO.getProductId());
+        if (product.getQuantity() < cartItemDTO.getQuantity()) {
+            throw new ResourceNotFoundException("Product with id: " + product.getId() + " has insufficient quantity");
+        }
         CartItem cartItem = new CartItem();
         cartItem.setQuantity(cartItemDTO.getQuantity());
         cartItem.setCart(cart);
@@ -74,6 +78,14 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItem updateCartItemQuantity(Long userId, Long productId, Integer quantity) {
         Cart cart = getCart(userId);
+        //check for insufficient quantity after updating
+        if (quantity < 0) {
+            throw new FailedToSaveException("Quantity cannot be negative");
+        }
+        Product product = productService.findProductById(productId);
+        if(product.getQuantity() < quantity){
+            throw new FailedToSaveException("Product with id: " + product.getId() + " has insufficient quantity");
+        }
         CartItem cartItem = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()

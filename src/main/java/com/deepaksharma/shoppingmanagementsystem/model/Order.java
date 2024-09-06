@@ -1,6 +1,7 @@
 package com.deepaksharma.shoppingmanagementsystem.model;
 
 
+import com.deepaksharma.shoppingmanagementsystem.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +28,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     Product product;
+
+    @Enumerated(EnumType.STRING)
+    OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     List<OrderItem> orderItems;
