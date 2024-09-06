@@ -4,15 +4,16 @@ import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundExce
 import com.deepaksharma.shoppingmanagementsystem.response.ApiResponse;
 import com.deepaksharma.shoppingmanagementsystem.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("${api.version}/category")
 public class CategoryController {
-    private final CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
     //get all categories
     @GetMapping("/all") //http://localhost:8080/api/v1/category/all

@@ -5,15 +5,16 @@ import com.deepaksharma.shoppingmanagementsystem.mapper.CategoryMapper;
 import com.deepaksharma.shoppingmanagementsystem.model.Category;
 import com.deepaksharma.shoppingmanagementsystem.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService{
-    private final CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public Category saveCategory(String name) {

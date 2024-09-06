@@ -11,17 +11,18 @@ import com.deepaksharma.shoppingmanagementsystem.model.Cart;
 import com.deepaksharma.shoppingmanagementsystem.model.User;
 import com.deepaksharma.shoppingmanagementsystem.repository.UserRepository;
 import com.deepaksharma.shoppingmanagementsystem.service.cart.CartService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final CartService cartService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CartService cartService;
 
 
     @Override

@@ -8,16 +8,19 @@ import com.deepaksharma.shoppingmanagementsystem.model.Product;
 import com.deepaksharma.shoppingmanagementsystem.repository.ProductRepository;
 import com.deepaksharma.shoppingmanagementsystem.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private final CategoryService categoryService;
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public Product saveProduct(ProductDTO product) {

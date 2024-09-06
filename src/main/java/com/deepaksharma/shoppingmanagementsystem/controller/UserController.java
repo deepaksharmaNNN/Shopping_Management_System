@@ -7,15 +7,17 @@ import com.deepaksharma.shoppingmanagementsystem.response.ApiResponse;
 import com.deepaksharma.shoppingmanagementsystem.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("${api.version}/user")
 public class UserController {
-    private final UserService userService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/add/user") // http://localhost:8080/api/v1/user/add/user
     public ResponseEntity<ApiResponse> addUser(@RequestBody @Valid UserDTO userDTO) {
