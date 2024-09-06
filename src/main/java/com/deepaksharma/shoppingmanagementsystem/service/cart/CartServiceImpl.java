@@ -54,6 +54,11 @@ public class CartServiceImpl implements CartService {
                 new ResourceNotFoundException("Cart not found for user with id: " + userId));
     }
 
+    @Override
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
+    }
+
 
     @Transactional
     @Override

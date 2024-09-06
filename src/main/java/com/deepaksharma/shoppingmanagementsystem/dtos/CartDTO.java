@@ -1,9 +1,7 @@
 package com.deepaksharma.shoppingmanagementsystem.dtos;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
