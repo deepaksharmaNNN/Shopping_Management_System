@@ -10,5 +10,6 @@ public interface CartService {
     Cart saveCart(Cart cart);
     CartItem addCartItem(Long userId, CartItemDTO cartItemDTO);
     CartItem updateCartItemQuantity(Long userId, Long productId, Integer quantity);
-    void removeCartItem(Long userId, Long productId);
+    void removeCartItem(Long userId, Long cartItemId);
+    void clearCart(Long userId);
 }

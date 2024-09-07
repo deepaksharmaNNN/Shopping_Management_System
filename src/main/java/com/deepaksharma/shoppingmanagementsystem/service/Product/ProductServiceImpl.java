@@ -95,4 +95,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findProductsByCategoryAndBrand(String category, String brand) {
         return productRepository.findByCategoryNameAndBrand(category, brand);
     }
+
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
 }

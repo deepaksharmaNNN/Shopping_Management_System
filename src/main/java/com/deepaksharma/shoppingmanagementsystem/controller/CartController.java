@@ -57,10 +57,20 @@ public class CartController {
 
     //delete product from cart
     @DeleteMapping("/delete") // http://localhost:8080/api/v1/cart/delete
-    public ResponseEntity<ApiResponse> deleteProductFromCart(@RequestParam Long userId, @RequestParam Long productId) {
+    public ResponseEntity<ApiResponse> deleteProductFromCart(@RequestParam Long userId, @RequestParam Long cartItemId) {
         try {
-            cartService.removeCartItem(userId, productId);
+            cartService.removeCartItem(userId, cartItemId);
             return ResponseEntity.ok(new ApiResponse("Product deleted from cart successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @PutMapping("/clear/{userId}") // http://localhost:8080/api/v1/cart/clear/1
+    public ResponseEntity<ApiResponse> clearCart(@PathVariable Long userId) {
+        try {
+            cartService.clearCart(userId);
+            return ResponseEntity.ok(new ApiResponse("Cart cleared successfully", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }

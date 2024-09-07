@@ -8,10 +8,7 @@ import com.deepaksharma.shoppingmanagementsystem.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.version}/order")
@@ -22,7 +19,7 @@ public class OrderController {
 
     // Place order
     @PostMapping("/place") // http://localhost:8080/api/v1/order/place
-    public ResponseEntity<ApiResponse> placeOrder(OrderDTO orderDTO) {
+    public ResponseEntity<ApiResponse> placeOrder(@RequestBody OrderDTO orderDTO) {
         try {
             return ResponseEntity.ok(new ApiResponse("Order placed successfully", orderService.createOrder(orderDTO)));
         } catch (FailedToSaveException e) {
@@ -41,7 +38,7 @@ public class OrderController {
     }
 
     // Find all orders
-    @PostMapping("/all") // http://localhost:8080/api/v1/order/all
+    @GetMapping("/all") // http://localhost:8080/api/v1/order/all
     public ResponseEntity<ApiResponse> findAllOrders() {
         try {
             return ResponseEntity.ok(new ApiResponse("All orders", orderService.findAllOrders()));

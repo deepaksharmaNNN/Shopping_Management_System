@@ -2,6 +2,7 @@ package com.deepaksharma.shoppingmanagementsystem.model;
 
 
 import com.deepaksharma.shoppingmanagementsystem.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,12 +23,9 @@ public class Order {
     Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    Product product;
 
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;

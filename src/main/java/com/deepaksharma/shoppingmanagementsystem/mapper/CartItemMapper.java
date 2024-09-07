@@ -11,7 +11,6 @@ public class CartItemMapper {
         return CartItem.builder()
                 .product(Product.builder().id(cartItemDto.getProductId()).build())
                 .quantity(cartItemDto.getQuantity())
-                .price(cartItemDto.getTotalPrice())
                 .build();
     }
 }
