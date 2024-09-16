@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SecurityConfig {
+
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -27,7 +29,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("${api.version}/product/").hasRole("ADMIN")
+                        .requestMatchers("${api.version}/product/save").hasRole("ADMIN")
+                        .requestMatchers("${api.version}/product/update").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )

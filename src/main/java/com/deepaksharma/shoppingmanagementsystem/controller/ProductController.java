@@ -6,17 +6,18 @@ import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundExce
 import com.deepaksharma.shoppingmanagementsystem.response.ApiResponse;
 import com.deepaksharma.shoppingmanagementsystem.service.Product.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${api.version}/product")
 public class ProductController {
-    @Autowired
-    private ProductService productService;
+
+    private final ProductService productService;
 
     // save product
     @PostMapping("/save") // http://localhost:8080/api/v1/product/save

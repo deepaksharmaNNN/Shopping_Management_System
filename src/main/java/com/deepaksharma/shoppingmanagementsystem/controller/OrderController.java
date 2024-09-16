@@ -5,17 +5,17 @@ import com.deepaksharma.shoppingmanagementsystem.exceptions.FailedToSaveExceptio
 import com.deepaksharma.shoppingmanagementsystem.exceptions.ResourceNotFoundException;
 import com.deepaksharma.shoppingmanagementsystem.response.ApiResponse;
 import com.deepaksharma.shoppingmanagementsystem.service.order.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${api.version}/order")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
     // Place order
     @PostMapping("/place") // http://localhost:8080/api/v1/order/place
