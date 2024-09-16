@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -55,8 +54,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart saveCart(Cart cart) {
-        return cartRepository.save(cart);
+    public void saveCart(Cart cart) {
+        cartRepository.save(cart);
     }
 
     @Transactional
@@ -170,5 +169,10 @@ public class CartServiceImpl implements CartService {
 
         // Save the updated cart
         cartRepository.save(cart);
+    }
+
+    @Override
+    public Double getTotalAmount(Long userId) {
+        return getCart(userId).getTotalPrice();
     }
 }

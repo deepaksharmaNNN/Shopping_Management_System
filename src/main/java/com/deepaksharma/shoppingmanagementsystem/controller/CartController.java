@@ -76,6 +76,15 @@ public class CartController {
         }
     }
 
+    @GetMapping("/total/{userId}") // http://localhost:8080/api/v1/cart/total/1
+    public ResponseEntity<ApiResponse> getTotalPrice(@PathVariable Long userId) {
+        try {
+            return ResponseEntity.ok(new ApiResponse("Total price fetched successfully", cartService.getTotalAmount(userId)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
 
 
 }
