@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     // find product by category and brand
-    @GetMapping("/find-by/category-brand")
+    @GetMapping("/find-by/category-and-brand") // http://localhost:8080/api/v1/product/find-by/category-and-brand?category={category}&brand={brand}
     public ResponseEntity<ApiResponse> findProductsByCategoryAndBrand(@RequestParam String category, @RequestParam String brand) {
         try {
             return ResponseEntity.ok(new ApiResponse("Product found successfully", productService.findProductsByCategoryAndBrand(category, brand)));

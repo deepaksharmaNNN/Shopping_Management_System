@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityConfig {
 
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -27,15 +27,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("${api.version}/product/save").hasRole("ADMIN")
-                        .requestMatchers("${api.version}/product/update").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .anyRequest().permitAll()
-                )
-                .formLogin(Customizer.withDefaults());
-        return http.build();
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                // Admin-only endpoints
+                .requestMatchers("${api.version}/user/**", "${api.version}/product/**", "${api.version}/category/**", "${api.version}/cart/create/")
+                .hasRole("ADMIN")
 
+                // User-only endpoints
+                .requestMatchers("${api.version}/order/**", "${api.version}/cart/**").hasRole("USER")
+
+                // Both admin and user can access
+                .requestMatchers("${api.version}/product/all", "${api.version}/user/update/**").hasAnyRole("ADMIN", "USER")
+
+                // Any other requests
+                .anyRequest().permitAll()
+            )
+            .formLogin(Customizer.withDefaults());
+
+        return http.build();
     }
 }

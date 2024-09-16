@@ -57,7 +57,7 @@ public class CartController {
     }
 
     //delete product from cart
-    @DeleteMapping("/delete") // http://localhost:8080/api/v1/cart/delete
+    @DeleteMapping("/delete-product") // http://localhost:8080/api/v1/cart/delete-product
     public ResponseEntity<ApiResponse> deleteProductFromCart(@RequestParam Long userId, @RequestParam Long cartItemId) {
         try {
             cartService.removeCartItem(userId, cartItemId);
